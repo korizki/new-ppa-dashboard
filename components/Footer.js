@@ -12,7 +12,7 @@ const Footer = () => {
     let bahasa = lang == 'idn' ? Ind : Eng
     return (
         <footer className={styles.footer}>
-            <h3>PPA Teamwork Operation by SS6 Development</h3>
+            <h3>PPA Teamwork Operation - SS6 Development</h3>
             <p>{bahasa.slogan}</p>         
         </footer>
     )

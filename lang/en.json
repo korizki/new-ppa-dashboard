@@ -6,5 +6,6 @@
     "slogan" : "Devotion - Integrity - Teamwork - Creativity - Winner - Perfection",
     "loginstatus" : "Login failed, wrong Password or Username.",
     "switchlang" : "Change language to Indonesia",
-    "warnlang" : "Successfully change language."
+    "warnlang" : "Successfully change language.",
+    "sesStatus" : "Your session has been expired, please re-Log In."
 }

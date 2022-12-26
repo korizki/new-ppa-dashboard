@@ -1,14 +1,9 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import Footer from '../components/Footer'
-import Login from '../components/Login'
+import Footer from '@/components/Footer'
+import Login from '@/components/Login'
 
 export default function Home() {
-  const changeLang = (param) => {
-    localStorage.setItem('lang', param)
-    param == 'Eng' ? alert('Language has been changed.') : alert('Berhasil mengganti bahasa.')
-    window.location.reload()
-  }
   return (
     <div className={styles.container}>
       <Head>

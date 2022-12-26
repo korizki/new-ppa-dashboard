@@ -6,5 +6,6 @@
     "slogan" : "Kepatuhan - Integritas - Kerjasama - Kreatifitas - Kemenangan - Kesempurnaan",
     "loginstatus" : "Login gagal, Username atau Password salah.",
     "switchlang" : "Ubah bahasa ke English",
-    "warnlang" : "Berhasil mengubah bahasa."
+    "warnlang" : "Berhasil mengubah bahasa.",
+    "sesStatus" : "Sesi anda telah berakhir, silahkan Login kembali."
 }
