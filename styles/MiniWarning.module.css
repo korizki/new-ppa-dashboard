@@ -1,0 +1,17 @@
+.info{
+    text-align: center;
+    font-size: 0.9em;
+    border-radius: 0.3em;
+    padding: 0.5em 0.7em;
+}
+.info>i{
+    margin-right: 8px;
+}
+.errmsg{
+    background: rgb(255, 240, 240);
+    color: crimson;
+}
+.infomsg{
+    color: cornflowerblue;
+    background: rgb(237, 243, 255);
+}

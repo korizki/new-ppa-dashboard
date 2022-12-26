@@ -7,5 +7,9 @@
     "loginstatus" : "Login failed, wrong Password or Username.",
     "switchlang" : "Change language to Indonesia",
     "warnlang" : "Successfully change language.",
-    "sesStatus" : "Your session has been expired, please re-Log In."
+    "sesStatus" : "Your session has been expired, please re-Log In.",
+    "suksesLogout" : "You've successfully logged out.",
+    "waktu" : "Time now ",
+    "loginas" : "Logged in as",
+    "carimenu" : "Find menu..."
 }

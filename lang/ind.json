@@ -7,5 +7,9 @@
     "loginstatus" : "Login gagal, Username atau Password salah.",
     "switchlang" : "Ubah bahasa ke English",
     "warnlang" : "Berhasil mengubah bahasa.",
-    "sesStatus" : "Sesi anda telah berakhir, silahkan Login kembali."
+    "sesStatus" : "Sesi anda telah berakhir, silahkan Login kembali.",
+    "suksesLogout" : "Anda berhasil Log Out, terima kasih.",
+    "waktu" : "Waktu saat ini ",
+    "loginas" : "Login sebagai",
+    "carimenu" : "Cari menu..."
 }

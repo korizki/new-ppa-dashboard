@@ -5,6 +5,7 @@ import idn from '../lang/ind.json'
 import eng from '../lang/en.json'
 import { useRouter } from 'next/router'
 import { removeToken } from '../features/checkAuth'
+import MiniWarning from '@/components/MiniWarning'
 
 export default function Login() {
     const [loginStatus, setLoginStatus] = useState('')
@@ -29,6 +30,11 @@ export default function Login() {
                 setSessExpired(false)
             }, 5000)
         }
+        // handle cek apakah logout
+        setLoginStatus(sessionStorage.getItem('loginstatus') ? sessionStorage.getItem('loginstatus') : '')
+        setTimeout(() => {
+            sessionStorage.removeItem('loginstatus')
+        },1000)
     }, [])
     // handle submit login
     const submitLogin = (e) => {
@@ -86,13 +92,29 @@ export default function Login() {
                     <button className={style.loginBtn}><i className="fi fi-rr-sign-in-alt"></i> Log In</button>
                 </form>
                 {
-                    loginStatus == 'failed' && (
-                        <p className={style.errmsg}><i className="fi fi-rr-ban"></i> {bahasa.loginstatus}</p>
+                    loginStatus == 'failed' && ( 
+                        <MiniWarning 
+                            type="errmsg" 
+                            icon="ban"
+                            detail={bahasa.loginstatus}
+                        /> 
                     )
                 }
                 {
-                    sessExpired && (
-                        <p className={style.errmsg}><i className="fi fi-rr-ban"></i> {bahasa.sesStatus}</p>
+                    sessExpired && ( 
+                        <MiniWarning 
+                            type="errmsg" 
+                            icon="ban"
+                            detail={bahasa.sesStatus} 
+                        /> 
+                    )
+                }{
+                    loginStatus == 'logout' && (
+                        <MiniWarning
+                            type="infomsg"
+                            icon="info"
+                            detail={bahasa.suksesLogout} 
+                        />
                     )
                 }
             </div>

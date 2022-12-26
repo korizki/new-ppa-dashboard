@@ -28,6 +28,7 @@
     background: royalblue;
     width: 100%;
     color: white;
+    margin-bottom: 1.5em;
 }
 .loginBtn:hover, .loginBtn:focus{
     box-shadow: 0 0 5px 0 royalblue;
