@@ -1,20 +1,66 @@
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
+
 html,
 body {
+  scroll-behavior: smoth;
+  font-family: "Poppins";
+  font-size: 14px;
+}
+i{
+  display: inline-block;
+  transform: translateY(0.15em);
+  margin-right: 0.2em;
+  color: inherit;
+}
+* {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: darkslategrey;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+:root {
+  --main-color: process.env.PRIMARY_COLOR;
+  --secondary-color: process.env.SECONDARY_COLOR;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url('../public/fonts/Poppins-Regular.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Poppins-Light";
+  src: url('../public/fonts/Poppins-Light.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Poppins-Bold";
+  src: url('../public/fonts/Poppins-Bold.ttf');
+  font-weight: normal;
 }
 
 a {
   color: inherit;
   text-decoration: none;
 }
-
-* {
-  box-sizing: border-box;
+form>.section{
+    display: flex;
+    margin-bottom: 1em;
+    flex-direction: column;
 }
-
+.section>input{
+    font-size: 1em;
+    background: rgb(250,250,250);
+    padding: 0.7em 0.9em;
+    margin-top: 0.3em;
+    border: 1px solid #ddd;
+    border-radius: 0.3em;
+}
+@media screen and (max-width: 480px){
+  body{
+    font-size: 12px
+  }
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
