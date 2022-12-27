@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import style from '../styles/Navbar.module.css'
 import idn from '../lang/ind'
@@ -27,10 +28,10 @@ const Navbar = () => {
             <div className={style.mini}>
                 <p>{bahasa.waktu} - {time}</p>
                 <p>Flash message here!</p>
-                <p>{bahasa.loginas}, <strong>User</strong></p>
+                <p>{bahasa.loginas}, <strong>User</strong><a className={style.logoutbtn} onClick={setStatus} title="Log out">- Log Out</a></p>
             </div>
             <div className={style.nav}>
-                <img src="./images/ppa.png" alt="logoppa" width="40" style={{marginRight: '150px'}}/>
+                <Link href="/dashboard"><Image src="/images/ppa.png" alt="logoppa" priority="lazy" width={40} height={40} style={{marginRight: '150px', transform: 'translateY(3px)'}} /></Link>
                 <div className={style.centermenu}>
                     <div className={style.mainmenu}>
                         Production
@@ -58,7 +59,7 @@ const Navbar = () => {
                 <div className={style.rightmenu}>
                     <i className="fi fi-rr-search"></i>
                     <input type="text" className={style.inputsrcmenu} placeholder={bahasa.carimenu}/>
-                    <a className={style.logoutbtn} onClick={setStatus} title="Log out"><i className="fi fi-rr-exit"></i></a>
+                    
                 </div>
             </div>
         </nav>

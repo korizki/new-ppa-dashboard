@@ -11,5 +11,6 @@
     "suksesLogout" : "Anda berhasil Log Out, terima kasih.",
     "waktu" : "Waktu saat ini ",
     "loginas" : "Login sebagai",
-    "carimenu" : "Cari menu..."
+    "carimenu" : "Cari menu...",
+    "gagallogin": "Login gagal, silahkan periksa koneksi internet anda."
 }

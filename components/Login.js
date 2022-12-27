@@ -11,12 +11,12 @@ import {useSelector, useDispatch} from 'react-redux'
 
 export default function Login() {
     const [loginStatus, setLoginStatus] = useState('')
-    const [bahasa, setBahasa] = useState('')
     const [sessExpired, setSessExpired] = useState(false)
     const inputUsername = useRef()
     const router = useRouter()
     const dispatch = useDispatch()
     const lang = useSelector(state => state.languageReducer.lang)
+    const bahasa = useSelector(state => state.languageReducer.dictionary)
     // cek apakah session sudah berakhir
     useEffect(() => {
         // remove token dari local storage
@@ -35,7 +35,6 @@ export default function Login() {
         },1000)
         // handle check language
         let lang = localStorage.getItem('lang')
-        setBahasa(localStorage.getItem('lang') == 'idn' ? idn : eng)
         dispatch(setLang(lang ? lang : 'idn'))
     }, [])
     // handle submit login
@@ -62,6 +61,9 @@ export default function Login() {
                         setLoginStatus('')
                     }, 5000)
                 }
+            },
+            error: () => {
+                alert(bahasa.gagallogin)
             }
         })
     }
@@ -70,7 +72,6 @@ export default function Login() {
         let lang = e.target.checked ? 'eng' : 'idn'
         e.target.checked ? localStorage.setItem('lang', 'eng') : localStorage.setItem('lang', 'idn')
         dispatch(setLang(lang))
-        setBahasa(lang == 'idn' ? idn : eng)
     }
     return (
         <div className={style.box}>

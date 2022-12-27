@@ -11,5 +11,6 @@
     "suksesLogout" : "You've successfully logged out.",
     "waktu" : "Time now ",
     "loginas" : "Logged in as",
-    "carimenu" : "Find menu..."
+    "carimenu" : "Find menu...",
+    "gagallogin": "Log in failed, please check your internet connection"
 }

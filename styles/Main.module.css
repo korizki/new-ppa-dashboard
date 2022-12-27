@@ -1,4 +1,4 @@
-.box{
+.boxs{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -6,6 +6,17 @@
     position: absolute;
     width: 100%;
 }
-.box>h1{
+@keyframes show{
+    from{
+        opacity: 0.5;
+        transform: translateY(-30px)
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+.boxs>h1{
     text-align: center;
+    animation: show 1s ease
 }
