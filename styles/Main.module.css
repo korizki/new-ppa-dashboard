@@ -1,0 +1,11 @@
+.box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.box>h1{
+    text-align: center;
+}

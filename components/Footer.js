@@ -2,13 +2,10 @@ import styles from '../styles/Footer.module.css';
 import React, { useState, useEffect } from 'react'
 import Eng from '../lang/en.json'
 import Ind from '../lang/ind.json'
+import {useSelector} from 'react-redux'
 
 const Footer = () => {
-    const [lang, setLang] = useState('')
-    useEffect(() => {
-        let lang = localStorage.getItem('lang') == 'idn' ? 'idn' : 'eng'
-        setLang(lang)
-    })
+    const lang = useSelector(state => state.languageReducer.lang)
     let bahasa = lang == 'idn' ? Ind : Eng
     return (
         <footer className={styles.footer}>

@@ -26,7 +26,7 @@ const Navbar = () => {
         <nav className={style.navbar}>
             <div className={style.mini}>
                 <p>{bahasa.waktu} - {time}</p>
-                <p>PPA Dashboard</p>
+                <p>Flash message here!</p>
                 <p>{bahasa.loginas}, <strong>User</strong></p>
             </div>
             <div className={style.nav}>

@@ -1,3 +1,5 @@
+import Head from 'next/head'
+import style from '@/styles/Main.module.css'
 import { useEffect } from "react"
 import { checkAuth } from '../../features/checkAuth'
 import Footer from '@/components/Footer'
@@ -9,9 +11,14 @@ const Dashboard = () => {
         checkAuth()
     }, [])
     return (
-        <div>
+        <div className={style.box}>
+            <Head>
+                <title>Main Page - PPA Dashboard</title>
+                <meta name="description" content="Halaman utama Dashboard PPA, berisi informasi summary Total Loader dan Update data Fleet Management System" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <Navbar />
-            <h1>Welcome to Dashboard</h1>
+            <h1>Welcome to Dashboard 🥳</h1>
             <Footer />
         </div>
     )
