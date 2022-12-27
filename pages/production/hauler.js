@@ -23,6 +23,7 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
     const [endDate, setEndDate] = useState('')
     const [isSubmit, setSubmit] = useState(false)
     const [selectedUnit, setSelectedUnit] = useState('')
+    const [listHistory, setListHistory] = useState([])
     // mendapatkan kamus
     const bahasa = useSelector(state => state.languageReducer.dictionary)
     // handle submit
@@ -45,12 +46,35 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                 if(data.data.length == 0){
                     alert(bahasa.tidakada)
                 } else {
+                    // jka data tersedia, tampilkan
                     setShowFilter(false)
+                    setListHistory(data.data)
+                    setTimeout(() => {
+                        loadDataTable('#historytable')
+                    },200)
                 }
             },
             error : () => {
                 alert(bahasa.cekkoneksi)
             }
+        })
+    }
+    // load datatable tab latest
+    const loadDataTable = (table) => {
+        $(`${table}`).DataTable({
+            destroy: true,
+            dom: 'lfBrtip',
+            buttons: [{
+                text: '<i class="fi fi-rr-download"></i>',
+                extend: 'csvHtml5',
+                titleAttr: 'Download Excel'
+            }, {
+                text: '<i class="fi fi-rr-settings-sliders"></i>',
+                extend: 'colvis',
+                titleAttr: 'Filter column'
+            }],
+            ordering: true,
+            order: [[1, 'desc']]
         })
     }
     // on submit change date
@@ -68,20 +92,7 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
     // setting datatable dan daterange
     useEffect(() => {
         if (activeTab == 1) {
-            $('#payloadtable').DataTable({
-                destroy: true,
-                dom: 'lfBrtip',
-                buttons: [{
-                    text: '<i class="fi fi-rr-download"></i>',
-                    extend: 'csvHtml5',
-                    titleAttr: 'Download Excel'
-                }, {
-                    text: '<i class="fi fi-rr-settings-sliders"></i>',
-                    extend: 'colvis',
-                    titleAttr: 'Filter column'
-                }],
-                ordering: true,
-            })
+            loadDataTable('#payloadtable')
         } else {
             $('input[name="daterange"]').daterangepicker({
                 opens: 'left'
@@ -89,8 +100,11 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                 sessionStorage.setItem('start', start.format('YYYY-MM-DD'))
                 sessionStorage.setItem('end', end.format('YYYY-MM-DD'))
             })
+            if(activeTab == 2){
+                listHistory.length && loadDataTable('#historytable')
+            }
         }
-    }, [activeTab])
+    }, [activeTab, listHistory])
     return (
         <div className={style.outerpayload}>
             <Head>
@@ -131,8 +145,8 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                                 <input list="listunit" onChange={changeUnit}/>
                                 <datalist id="listunit">
                                     {
-                                        listAllUnit.length && listAllUnit.map(item => (
-                                            <option value={item}>{item}</option>
+                                        listAllUnit.length && listAllUnit.map((item,index) => (
+                                            <option value={item} key={index}>{item}</option>
                                         ))
                                     }
                                 </datalist>
@@ -196,6 +210,69 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                                                             <td>{item.emts}</td>
                                                         </tr>
                                                     ))}
+                                                </tbody>
+                                            )
+                                        }
+                                    </table>
+                                </div>
+                            ) : ''
+                        }{
+                            activeTab == 2 ? (
+                                <div className={style.tablebox}>
+                                    <table id="historytable">
+                                        <thead>
+                                            <tr>
+                                                <th>CN</th>
+                                                <th>Date</th>
+                                                <th>Loader</th>
+                                                <th>PLD (Ton)</th>
+                                                <th>Speed</th>
+                                                <th>EDT (Min)</th>
+                                                <th>EDD (Km)</th>
+                                                <th>ES (Km/h)</th>
+                                                <th>EST (Min)</th>
+                                                <th>LT (Min)</th>
+                                                <th>LDT (Min)</th>
+                                                <th>LDD (Km)</th>
+                                                <th>LS (Km/h)</th>
+                                                <th>LST (Min)</th>
+                                                <th>DT (Min)</th>
+                                                <th>RSSI</th>
+                                                <th>LMTS (Km/h)</th>
+                                                <th>EMTS (Km/h)</th>
+                                            </tr>
+                                        </thead>
+                                        {
+                                            listHistory.length ? (
+                                                <tbody>
+                                                    {listHistory.map((item, index) => (
+                                                        <tr key={index}>
+                                                            <td>{item.cn}</td>
+                                                            <td>{item.created_date}</td>
+                                                            <td>{item.loader}</td>
+                                                            <td>{item.pld}</td>
+                                                            <td>{(item.eats + item.lats) / 2}</td>
+                                                            <td>{item.ett}</td>
+                                                            <td>{item.etd}</td>
+                                                            <td>{item.eats}</td>
+                                                            <td>{item.est}</td>
+                                                            <td>{item.lt}</td>
+                                                            <td>{item.ltt}</td>
+                                                            <td>{item.ltd}</td>
+                                                            <td>{item.lats}</td>
+                                                            <td>{item.lst}</td>
+                                                            <td>{item.dt}</td>
+                                                            <td>{item.cwc}</td>
+                                                            <td>{item.lmts}</td>
+                                                            <td>{item.emts}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            ) : (
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="18">{bahasa.tidakada}</td>
+                                                    </tr>
                                                 </tbody>
                                             )
                                         }

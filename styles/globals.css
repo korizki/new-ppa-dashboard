@@ -58,7 +58,7 @@ form>.section{
     border-radius: 0.3em;
 }
 /* custom styling datatable payload */
-#payloadtable_wrapper{
+#payloadtable_wrapper, #historytable_wrapper{
   padding: 1em 0 2em 0;
 }
 .dataTables_wrapper .dataTables_length select, .dataTables_wrapper .dataTables_filter input{
@@ -67,25 +67,26 @@ form>.section{
   margin: 0 0.5em !important;
   border: 1px solid #ddd !important;
 }
-#payloadtable{
+#payloadtable, #historytable{
+  border-collapse: collapse;
+  display: block;
+  margin: 1em 0 2em 0;
   padding-top: 1.5em !important;
 }
-table{
-    border-collapse: collapse;
-    margin: 1em 0 2em 0;
-}
-table>thead>tr>th{
+#payloadtable>thead>tr>th, #historytable>thead>tr>th{
   background: rgb(245,245,245);
 }
-table>thead>tr>th, table>tbody>tr>td{
+#payloadtable>thead>tr>th, #payloadtable>tbody>tr>td,
+#historytable>thead>tr>th, #historytable>tbody>tr>td{
   padding: 0.8em 1em;
+  white-space: nowrap;
   text-align: center !important;
 }
-table>tbody>tr:hover{
+#payloadtable>tbody>tr:hover, #historytable>tbody>tr:hover{
   cursor: pointer !important;
   background: rgb(250,250,250) !important;
 }
-table>tbody>tr>td{
+#payloadtable>tbody>tr>td, #historytable>tbody>tr>td{
   border-bottom: 1px solid rgb(240,240,240);
 }
 .buttons-csv, .buttons-collection{
@@ -102,15 +103,23 @@ table>tbody>tr>td{
   body{
     font-size: 12px
   }
-  .dataTables_wrapper, .dataTables_length, .dataTables_wrapper, .dataTables_filter{
-    float: inline-end;
+  .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter{
+    float: unset;
+    display: inline-block;
   }
+  
   .dataTables_wrapper .dataTables_length select, .dataTables_wrapper .dataTables_filter input{
     padding: 0.5em !important;
     margin-top: 0.8em;
   }
   .dataTables_filter{
     width: 100%;
+  }
+  .dt-buttons{
+    position: absolute !important;
+    right: 0 !important;
+    top: 0;
+    margin-top: 1em;
   }
   .dataTables_filter>label{
     width: 100%;
