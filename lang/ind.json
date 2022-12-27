@@ -12,5 +12,9 @@
     "waktu" : "Waktu saat ini ",
     "loginas" : "Login sebagai",
     "carimenu" : "Cari menu...",
-    "gagallogin": "Login gagal, silahkan periksa koneksi internet anda."
+    "gagallogin": "Login gagal, silahkan periksa koneksi internet anda.",
+    "pilihperiode": "Pilih tanggal/periode",
+    "cekkoneksi": "Gagal mendapatkan data, silahkan periksa koneksi internet anda",
+    "pilih" : "Pilih ",
+    "tidakada": "Data dengan parameter pencarian anda, tidak tersedia."
 }

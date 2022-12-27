@@ -12,5 +12,9 @@
     "waktu" : "Time now ",
     "loginas" : "Logged in as",
     "carimenu" : "Find menu...",
-    "gagallogin": "Log in failed, please check your internet connection"
+    "cekkoneksi": "Failed retrieving data, please check your internet connection.",
+    "gagallogin": "Log in failed, please check your internet connection",
+    "pilihperiode": "Select date/period",
+    "tidakada": "No data found for your searching parameter.",
+    "pilih" : "Select "
 }

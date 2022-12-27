@@ -49,3 +49,65 @@
 .contentlatest{
     display: none
 }
+.filterbox{
+    position: absolute;
+    right: 4em;
+    margin-top: 0.5em;
+    border-radius: 0.5em;
+    padding: 1em 2em;
+    opacity: 0;
+    transform: translateY(-1em);
+    background: white;
+    border: 1px solid rgb(240,240,240);
+    box-shadow: 2px 2px 7px 0 rgb(240,240,240);
+    z-index: -1;
+}
+.activefilter{
+    z-index: 10;
+    opacity: 1;
+    transform: translateY(0);
+}
+.form{
+    display: flex;
+    align-items: flex-end;
+    gap: 2em;
+}
+.form>div>button>i{
+    font-weight: bolder
+}
+.form>div>button{
+    background: cornflowerblue;
+    color: white;
+    border: 1px solid cornflowerblue;
+    padding: 0.9em 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+.section{
+    display: flex;
+    flex-direction: column;
+}
+.closebtn{
+    cursor: pointer;
+    color: #ddd;
+    margin-left: 2em;
+    transform: translate(1em, -0.5em)
+}
+.form>div>button>i{
+    margin-right: 0;
+}
+
+@media screen and (max-width: 480px){
+    .tablebox{
+        margin: 1em 0;
+    }
+    .filterbox{
+        right: 2em;
+        font-size: 0.8em;
+        padding: 0.8em 1.5em;
+    }
+    .form>div>button{
+        padding: 0.5em 0.7em;
+    }
+    
+}
