@@ -104,7 +104,6 @@ form>.section{
     font-size: 12px
   }
   .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter{
-    float: unset;
     display: inline-block;
   }
   

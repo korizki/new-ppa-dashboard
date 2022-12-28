@@ -1,0 +1,30 @@
+.waitmessage{
+    position: fixed;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: rgba(255,255,255,0.8);
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+.waitcontent>img{
+    width: 3em;
+    height: 3em;
+    position: absolute;
+}
+@keyframes spin{
+    from{transform: rotate(0)}
+    to{transform: rotate(360deg)}
+}
+.spinner{
+    position: absolute;
+    width: 5em;
+    height: 5em;
+    border: 0.4em solid #ddd;
+    border-top: 0.4em solid salmon;
+    border-radius: 50%;
+    animation: spin 1.5s infinite;
+    margin-top: -1em;
+    margin-left: -1em;
+}

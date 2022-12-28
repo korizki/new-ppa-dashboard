@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import style from '../styles/Navbar.module.css'
+import WaitMessage from '@/components/LoadingMessage'
 import idn from '../lang/ind'
 import en from '../lang/en'
 
 const Navbar = () => {
     const [time, setTime] = useState('')
     const [bahasa, setBahasa] = useState('')
+    const [showWait, setShowWait] = useState(false)
     // mendapatkan waktu 
     useEffect(() => {
         setInterval(() => {
@@ -17,14 +19,24 @@ const Navbar = () => {
     // memeriksa bahasa yang dipilih user
     useEffect(() => {
         setBahasa(localStorage.getItem('lang') == 'idn' ? idn : en)
+        setShowWait(false)
     },[])
     // handle klik logged out
     const setStatus = () => {
         sessionStorage.setItem('loginstatus', 'logout')
         window.location.href = "/"
     }
+    const showHideWaitMessage = () => {
+        setShowWait(true)
+        setTimeout(() => {
+            setShowWait(false)
+        },3000)
+    }
     return (
         <nav className={style.navbar}>
+            {
+                showWait ? (<WaitMessage />) : ''
+            }
             <div className={style.mini}>
                 <p>{bahasa.waktu} - {time}</p>
                 <p>Flash message here!</p>
@@ -37,7 +49,7 @@ const Navbar = () => {
                         Production
                         <div className={style.submenu}>
                             <Link href="/production/loader">By Loader</Link>
-                            <Link href="/production/hauler">By Hauler</Link>
+                            <Link href="/production/hauler" onClick={showHideWaitMessage}>By Hauler</Link>
                         </div>
                     </div>
                     <div className={style.mainmenu}>

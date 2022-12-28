@@ -15,6 +15,7 @@ import 'datatables.net-dt/css/jquery.dataTables.min.css'
 import 'datatables.net-buttons-dt/css/buttons.dataTables.css'
 import daterangepicker from 'daterangepicker'
 import 'daterangepicker/daterangepicker.css'
+import WaitMessage from '@/components/LoadingMessage'
 
 const Loader = ({ listDataLatest, listAllUnit}) => {
     const [activeTab, setActiveTab] = useState(1)
@@ -113,6 +114,7 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
+                {/* <WaitMessage /> */}
                 <Navbar />
                 <div className={style.content}>
                     <div className={style.activenav}>
