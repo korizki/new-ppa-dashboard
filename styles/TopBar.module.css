@@ -1,0 +1,32 @@
+.activenav{
+    padding: 0.3em;
+    background: rgb(250,250,250);
+    border-radius: 2em;
+    outline: 1px solid rgb(230,230,230);
+    margin: 0 2em;
+    display: flex;
+    gap: 3em;
+}
+.activenav{
+    display: flex;
+    gap: 0.5em
+}
+.activenav>a{
+    padding: 0.7em 2em;
+    border-radius: 2em;
+    display: inline-block;
+}
+.activenav>a>i{
+    transition: none;
+}
+.activenav>a:hover{
+    background: rgb(230,230,230);
+    cursor: pointer;
+}
+.activenav>.active, .activenav>div>.active:hover{
+    background: dodgerblue !important;
+    color: white !important;
+}
+.activenav>a:nth-child(2)>i{
+    margin-right: 0.6em
+}

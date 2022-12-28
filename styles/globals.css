@@ -1,9 +1,10 @@
 @import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
 
 html,
 body {
   scroll-behavior: smooth;
-  font-family: "Poppins";
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
 }
 i{
@@ -23,22 +24,6 @@ i{
   --main-color: process.env.PRIMARY_COLOR;
   --secondary-color: process.env.SECONDARY_COLOR;
 }
-@font-face {
-  font-family: "Poppins";
-  src: url('../public/fonts/Poppins-Regular.ttf');
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Poppins-Light";
-  src: url('../public/fonts/Poppins-Light.ttf');
-  font-weight: normal;
-}
-@font-face {
-  font-family: "Poppins-Bold";
-  src: url('../public/fonts/Poppins-Bold.ttf');
-  font-weight: normal;
-}
-
 a {
   color: inherit;
   text-decoration: none;
