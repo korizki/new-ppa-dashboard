@@ -30,6 +30,7 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
     const [cycleType, setCycleType] = useState(1)
     // mendapatkan kamus
     const bahasa = useSelector(state => state.languageReducer.dictionary)
+    const url = process.env.NEXT_PUBLIC_URL_API
     // handle submit
     const submitDate = (e) => {
         e.preventDefault()
@@ -63,7 +64,7 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
     const getDataHistory = (startDate, endDate, selectedUnit, activeTab) => {
         // get history
         $.ajax({
-            url: `http://api5.ppa-mhu.net/cycle/findCnBetween?cn=${selectedUnit}&startDate=${startDate}&endDate=${endDate}`,
+            url: `http://api5.${url}/cycle/findCnBetween?cn=${selectedUnit}&startDate=${startDate}&endDate=${endDate}`,
             method: 'GET',
             success: (data) => {
                 loadDataToState(data.data, 'history', activeTab)
@@ -76,7 +77,7 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
     const getDataCycleDate = (startDate, endDate, activeTab) => {
         // data cycle by date range
         $.ajax({
-            url: `http://api5.ppa-mhu.net/cycle/countCnDateBetween?startDate=${startDate}&endDate=${endDate}`,
+            url: `http://api5.${url}/cycle/countCnDateBetween?startDate=${startDate}&endDate=${endDate}`,
             method: 'GET',
             success: (data) => {
                 loadDataToState(data.data, 'cycledate', activeTab)
@@ -87,7 +88,7 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
         })
         // data cycle hourly by cycle
         $.ajax({
-            url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=cycle`,
+            url: `http://api5.${url}/cycle/countHourly?date=${startDate}&value=cycle`,
             method: 'GET',
             success: (data) => {
                 setListDataByCycle(data)
@@ -95,7 +96,7 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
         })
         // data cycle by volume
         $.ajax({
-            url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=volume`,
+            url: `http://api5.${url}/cycle/countHourly?date=${startDate}&value=volume`,
             method: 'GET',
             success: (data) => {
                 setListDataByVolume(data)
@@ -103,7 +104,7 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
         })
         // data cycle by tc
         $.ajax({
-            url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=tc`,
+            url: `http://api5.${url}/cycle/countHourly?date=${startDate}&value=tc`,
             method: 'GET',
             success: (data) => {
                 setListDataByCount(data)
