@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import style from '@/styles/ProdByLoader.module.css'
-import idn from '@/lang/ind'
-import en from '@/lang/en'
 import $ from 'jquery'
 import 'datatables.net-dt'
 import "datatables.net-buttons/js/buttons.colVis.js"
@@ -15,7 +13,6 @@ import 'datatables.net-dt/css/jquery.dataTables.min.css'
 import 'datatables.net-buttons-dt/css/buttons.dataTables.css'
 import daterangepicker from 'daterangepicker'
 import 'daterangepicker/daterangepicker.css'
-import WaitMessage from '@/components/LoadingMessage'
 
 const Loader = ({ listDataLatest, listAllUnit }) => {
     const [activeTab, setActiveTab] = useState(1)
@@ -93,7 +90,6 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
             url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=cycle`,
             method: 'GET',
             success: (data) => {
-                console.log(data)
                 setListDataByCycle(data)
             }
         })
@@ -102,7 +98,6 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
             url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=volume`,
             method: 'GET',
             success: (data) => {
-                // console.log(data)
                 setListDataByVolume(data)
             }    
         })
@@ -111,7 +106,6 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
             url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=tc`,
             method: 'GET',
             success: (data) => {
-                // console.log(data)
                 setListDataByCount(data)
             }    
         })
