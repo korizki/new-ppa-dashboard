@@ -56,7 +56,7 @@
 .filterbox{
     position: absolute;
     right: 4em;
-    margin-top: 0.5em;
+    margin-top: -2.5em;
     border-radius: 0.5em;
     padding: 1em 2em;
     opacity: 0;
@@ -87,6 +87,9 @@
     border-radius: 0.5em;
     cursor: pointer;
 }
+.form>div>button:hover{
+    box-shadow: 0 0 7px 0 cornflowerblue;
+}
 .section{
     display: flex;
     flex-direction: column;
@@ -107,6 +110,14 @@
     background: cornflowerblue;
     color: white;
     border-bottom: 1px solid #ddd;
+}
+.info{
+    padding: 0.3em 1em;
+    border-radius: 0.4em;
+    display: inline-block;
+    margin: 1.5em 0 0 1em;
+    background: rgb(240, 248, 255);
+    color: dodgerblue; 
 }
 
 @media screen and (max-width: 480px){

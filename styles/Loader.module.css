@@ -34,15 +34,15 @@
     background: white;
     border-radius: 0.5em;
     border: 1px solid rgb(240,240,240);
-    box-shadow: 2px 2px 5px 0 rgb(240,240,240);
+    box-shadow: 2px 2px 4px 0 rgb(240,240,240);
     position: absolute;
     right: 4em;
-    margin-top: -2em;
+    margin-top: -4em;
     opacity: 0;
     z-index: -1
 }
 .activefilter{
-    margin-top: 1em;
+    margin-top: -2.5em;
     z-index: 20;
     opacity: 1;
 }
@@ -70,4 +70,12 @@
     margin: 1.5em 0 0 2em;
     background: rgb(240, 248, 255);
     color: dodgerblue; 
+}
+@media screen and (max-width: 480px){
+    .activefilter{
+        margin-top: -2em;
+    }
+    .filterbox{
+        right: 2em;
+    }
 }

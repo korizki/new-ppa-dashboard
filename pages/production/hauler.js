@@ -240,6 +240,11 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
                             <a onClick={() => setShowFilter(!showFilter)} title={bahasa.pilihperiode} className={style.filter}><i className="fi fi-rr-calendar"></i></a>
                         ) : ''
                     }
+                    {
+                        startDate ? (
+                            <p className={style.info}><i className="fi fi-rr-info"></i> {bahasa.infoperiode} <strong>{startDate} - {endDate}</strong></p>
+                        ) : ""
+                    }
                     <div className={`${showFilter ? style.activefilter : ''} ${style.filterbox}`}>
                         <form className={style.form} onSubmit={submitDate}>
                             <div className="section">
