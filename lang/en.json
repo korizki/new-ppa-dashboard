@@ -16,5 +16,6 @@
     "gagallogin": "Log in failed, please check your internet connection",
     "pilihperiode": "Select date/period",
     "tidakada": "No data found for your searching parameter.",
-    "pilih" : "Select "
+    "pilih" : "Select ",
+    "infoperiode" : "Displaying data in "
 }

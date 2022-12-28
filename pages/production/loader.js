@@ -19,6 +19,7 @@ const Loader = () => {
     const [activeTab, setActiveTab] = useState(1)
     const [date, setDate] = useState((new Date()).toLocaleDateString('fr-CA'))
     const [isSubmit, setIsSubmit] = useState(true)
+    const [showFilter, setShowFilter] = useState(false)
     const [listData, setListData] = useState({})
     const [listDataTC, setListDataTC] = useState({})
     const bahasa = useSelector(state => state.languageReducer.dictionary)
@@ -73,23 +74,30 @@ const Loader = () => {
             error: () => {
                 alert(bahasa.cekkoneksi)
             }
-
         })
+        setActiveTab(1)
+    }
+    const submitDate = (e) => {
+        e.preventDefault()
+        setIsSubmit(true)
+        setShowFilter(false)
     }
     useEffect(() => {
         if (activeTab == 1) {
-            setTimeout(() => {
-                loadDataTable('#loadercycle')
-                loadDataTable('#loadercycle2')
-            },200)
+            loadDataTable('#loadercycle')
+            loadDataTable('#loadercycle2')
         } else if (activeTab == 2) {
             loadDataTable('#loadertc')
             loadDataTable('#loadertc2')
         }
     }, [activeTab])
+
     useEffect(() => {
-        getDataFromAPI(date)
-    }, [activeTab, date, isSubmit])
+        if(isSubmit){
+            getDataFromAPI(date)
+        }
+        setIsSubmit(false)
+    }, [date, isSubmit])
     return (
         <div className={style.loaderbox}>
             <Head>
@@ -100,6 +108,23 @@ const Loader = () => {
             <div>
                 <Navbar />
                 <TopBar listItem={itemTopBar} setActive={(param) => setActiveTab(param)} />
+                <a title={bahasa.pilihperiode} className={style.filterbtn} onClick={() => setShowFilter(!showFilter)}><i className="fi fi-rr-calendar"></i></a>
+                {
+                    date ? (
+                        <p className={style.info}><i className="fi fi-rr-info"></i> {bahasa.infoperiode} <strong>{date}</strong></p>
+                    ) : "" 
+                }
+                <div className={`${style.filterbox} ${showFilter ? style.activefilter : ''}`}>
+                    <form onSubmit={submitDate}>
+                        <div className="section">
+                            <label >{bahasa.pilihperiode}</label>
+                            <input type="date" onChange={(e) => setDate(e.target.value)}/>
+                        </div>
+                        <div className="section">
+                            <button><i className="fi fi-rr-search"></i></button>
+                        </div>
+                    </form>
+                </div>
                 {
                     activeTab == 1 ? (
                         <div className={style.tablebox}>

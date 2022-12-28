@@ -8,15 +8,66 @@
 }
 .tablebox{
     overflow: auto;
-    margin: 2em;
+    margin: 1em 2em;
 }
 .tablebox>h3{
     background: cornflowerblue;
     color: white;
     padding: 0.5em 1em;
-    border-radius: 0.5em;
+    border-radius: 0.3em;
     margin: 2.5em 0 1em 0;
 }
 .tablebox>h3:nth-child(1){
-    margin-top: 0.5em;
+    margin-top: 0em;
+}
+.filterbtn{
+    position: absolute;
+    right: 4em;
+    cursor: pointer;
+    transform: translateY(-2.5em);
+}
+.filterbtn:hover{
+    color: dodgerblue;
+}
+.filterbox{
+    padding: 0.7em 2em;
+    background: white;
+    border-radius: 0.5em;
+    border: 1px solid rgb(240,240,240);
+    box-shadow: 2px 2px 5px 0 rgb(240,240,240);
+    position: absolute;
+    right: 4em;
+    margin-top: -2em;
+    opacity: 0;
+    z-index: -1
+}
+.activefilter{
+    margin-top: 1em;
+    z-index: 20;
+    opacity: 1;
+}
+.filterbox>form{
+    display: flex;
+    align-items: flex-end;
+    gap: 1em;
+}
+.filterbox>form>div>button{
+    padding: 0.8em 0.9em;
+    background: cornflowerblue;
+    color: white;
+    font-weight: bolder;
+    border: 2px solid cornflowerblue;
+    border-radius: 0.4em;
+    cursor: pointer;
+}
+.filterbox>form>div>button:hover{
+    box-shadow: 0 0 7px 0 cornflowerblue;
+}
+.info{
+    padding: 0.3em 1em;
+    border-radius: 0.4em;
+    display: inline-block;
+    margin: 1.5em 0 0 2em;
+    background: rgb(240, 248, 255);
+    color: dodgerblue; 
 }

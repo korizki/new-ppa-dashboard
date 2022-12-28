@@ -16,5 +16,6 @@
     "pilihperiode": "Pilih tanggal/periode",
     "cekkoneksi": "Gagal mendapatkan data, silahkan periksa koneksi internet anda",
     "pilih" : "Pilih ",
-    "tidakada": "Data dengan parameter pencarian anda, tidak tersedia."
+    "tidakada": "Data dengan parameter pencarian anda, tidak tersedia.",
+    "infoperiode" : "Menampilkan data periode "
 }

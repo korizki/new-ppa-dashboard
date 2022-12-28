@@ -93,6 +93,9 @@ form>.section{
 .buttons-csv{
   margin-left: 2em !important;
 }
+strong{
+  color: inherit;
+}
 @media screen and (max-width: 480px){
   body{
     font-size: 12px
@@ -122,7 +125,7 @@ form>.section{
   .dataTables_filter>label>input{
     flex: 1;
   }
-  #cyclehourcycle_wrapper>.dt-buttons, #cyclehourcycle2_wrapper>.dt-buttons{
+  #cyclehourcycle_wrapper>.dt-buttons, #cyclehourcycle2_wrapper>.dt-buttons, #loadercycle_wrapper>.dt-buttons, #loadercycle2_wrapper>.dt-buttons, #loadertc_wrapper>.dt-buttons, #loadertc2_wrapper>.dt-buttons{
     top: -1em !important;
   }
 }
