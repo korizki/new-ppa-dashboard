@@ -58,8 +58,15 @@ form>.section{
     border-radius: 0.3em;
 }
 /* custom styling datatable payload */
-#payloadtable_wrapper, #historytable_wrapper{
+#payloadtable_wrapper, #historytable_wrapper, #cyclebydate_wrapper, #cyclehourcycle, #cyclehourcycle2, #cyclehourvolume, #cyclehourvolume2, #cyclehourcount, #cyclehourcount2{
+  border-collapse: collapse;
   padding: 1em 0 2em 0;
+}
+.tabelprod{
+  width: 100%;
+}
+#cyclehourcycle2_filter, #cyclehourcycle_filter, #cyclehourvolume_filter, #cyclehourvolume2_filter, #cyclehourcount_filter, #cyclehourcount2_filter{
+  padding-bottom: 1.5em;
 }
 .dataTables_wrapper .dataTables_length select, .dataTables_wrapper .dataTables_filter input{
   padding: 0.7em 1em !important;
@@ -67,26 +74,25 @@ form>.section{
   margin: 0 0.5em !important;
   border: 1px solid #ddd !important;
 }
-#payloadtable, #historytable{
+#payloadtable, #historytable, #cyclebydate{
   border-collapse: collapse;
   display: block;
   margin: 1em 0 2em 0;
   padding-top: 1.5em !important;
 }
-#payloadtable>thead>tr>th, #historytable>thead>tr>th{
+.tabelprod>thead>tr>th{
   background: rgb(245,245,245);
 }
-#payloadtable>thead>tr>th, #payloadtable>tbody>tr>td,
-#historytable>thead>tr>th, #historytable>tbody>tr>td{
-  padding: 0.8em 1em;
+.tabelprod>thead>tr>th, .tabelprod>tbody>tr>td{
+  padding: 0.8em 1em !important;
   white-space: nowrap;
   text-align: center !important;
 }
-#payloadtable>tbody>tr:hover, #historytable>tbody>tr:hover{
+.tabelprod>tbody>tr:hover{
   cursor: pointer !important;
   background: rgb(250,250,250) !important;
 }
-#payloadtable>tbody>tr>td, #historytable>tbody>tr>td{
+.tabelprod>tbody>tr>td{
   border-bottom: 1px solid rgb(240,240,240);
 }
 .buttons-csv, .buttons-collection{
@@ -127,6 +133,9 @@ form>.section{
   }
   .dataTables_filter>label>input{
     flex: 1;
+  }
+  #cyclehourcycle_wrapper>.dt-buttons, #cyclehourcycle2_wrapper>.dt-buttons{
+    top: -1em !important;
   }
 }
 @media (prefers-color-scheme: dark) {

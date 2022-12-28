@@ -17,7 +17,7 @@ import daterangepicker from 'daterangepicker'
 import 'daterangepicker/daterangepicker.css'
 import WaitMessage from '@/components/LoadingMessage'
 
-const Loader = ({ listDataLatest, listAllUnit}) => {
+const Loader = ({ listDataLatest, listAllUnit }) => {
     const [activeTab, setActiveTab] = useState(1)
     const [showFilter, setShowFilter] = useState(false)
     const [startDate, setStartDate] = useState('')
@@ -25,6 +25,12 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
     const [isSubmit, setSubmit] = useState(false)
     const [selectedUnit, setSelectedUnit] = useState('')
     const [listHistory, setListHistory] = useState([])
+    const [listCycleDate, setListCycleDate] = useState([])
+    const [activeTabCycle, setActiveTabCycle] = useState(1)
+    const [listDataByCycle, setListDataByCycle] = useState([])
+    const [listDataByVolume, setListDataByVolume] = useState([])
+    const [listDataByCount, setListDataByCount] = useState([])
+    const [cycleType, setCycleType] = useState(1)
     // mendapatkan kamus
     const bahasa = useSelector(state => state.languageReducer.dictionary)
     // handle submit
@@ -38,26 +44,76 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
     const changeUnit = (e) => {
         setSelectedUnit(e.target.value)
     }
-    const getDataHistory = (startDate, endDate, selectedUnit) => {
+    const loadDataToState = (data, dataType, activeTab) => {
+        if (data.length == 0) {
+            if(dataType == 'history' && activeTab == 2 || dataType == 'cycledate' && activeTab == 3){
+                alert(bahasa.tidakada)
+            }
+        } else {
+            setShowFilter(false)
+            if (dataType == 'history') {
+                // jka data tersedia, tampilkan
+                setListHistory(data)
+                setTimeout(() => {
+                    loadDataTable('#historytable')
+                }, 200)
+            } else if (dataType == 'cycledate') {
+                setListCycleDate(data)
+                setActiveTabCycle(1)
+            }
+        }
+    }
+    const getDataHistory = (startDate, endDate, selectedUnit, activeTab) => {
+        // get history
         $.ajax({
             url: `http://api5.ppa-mhu.net/cycle/findCnBetween?cn=${selectedUnit}&startDate=${startDate}&endDate=${endDate}`,
             method: 'GET',
             success: (data) => {
-                console.log(data)
-                if(data.data.length == 0){
-                    alert(bahasa.tidakada)
-                } else {
-                    // jka data tersedia, tampilkan
-                    setShowFilter(false)
-                    setListHistory(data.data)
-                    setTimeout(() => {
-                        loadDataTable('#historytable')
-                    },200)
-                }
+                loadDataToState(data.data, 'history', activeTab)
             },
-            error : () => {
+            error: () => {
                 alert(bahasa.cekkoneksi)
             }
+        })
+    }
+    const getDataCycleDate = (startDate, endDate, activeTab) => {
+        // data cycle by date range
+        $.ajax({
+            url: `http://api5.ppa-mhu.net/cycle/countCnDateBetween?startDate=${startDate}&endDate=${endDate}`,
+            method: 'GET',
+            success: (data) => {
+                loadDataToState(data.data, 'cycledate', activeTab)
+            },
+            error: () => {
+                alert(bahasa.cekkoneksi)
+            }
+        })
+        // data cycle hourly by cycle
+        $.ajax({
+            url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=cycle`,
+            method: 'GET',
+            success: (data) => {
+                console.log(data)
+                setListDataByCycle(data)
+            }
+        })
+        // data cycle by volume
+        $.ajax({
+            url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=volume`,
+            method: 'GET',
+            success: (data) => {
+                // console.log(data)
+                setListDataByVolume(data)
+            }    
+        })
+        // data cycle by tc
+        $.ajax({
+            url: `http://api5.ppa-mhu.net/cycle/countHourly?date=${startDate}&value=tc`,
+            method: 'GET',
+            success: (data) => {
+                // console.log(data)
+                setListDataByCount(data)
+            }    
         })
     }
     // load datatable tab latest
@@ -80,16 +136,14 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
     }
     // on submit change date
     useEffect(() => {
-        if(isSubmit){
-            if(activeTab == 2){
-                // submit tanggal pada tab history
-                getDataHistory(startDate, endDate, selectedUnit)
-            } else {
-                // submit tanggal pada tab cycle
-            }
+        if (isSubmit) {
+            // submit tanggal pada tab history
+            getDataHistory(startDate, endDate, selectedUnit, activeTab)
+            // submit tanggal pada tab cycle
+            getDataCycleDate(startDate, endDate, activeTab)
         }
         setSubmit(false)
-    },[startDate, endDate, selectedUnit, isSubmit, activeTab])
+    }, [startDate, endDate, selectedUnit, isSubmit, activeTab])
     // setting datatable dan daterange
     useEffect(() => {
         if (activeTab == 1) {
@@ -101,11 +155,32 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                 sessionStorage.setItem('start', start.format('YYYY-MM-DD'))
                 sessionStorage.setItem('end', end.format('YYYY-MM-DD'))
             })
-            if(activeTab == 2){
+            if (activeTab == 2) {
                 listHistory.length && loadDataTable('#historytable')
+            } else {
+                setActiveTabCycle(1)
             }
         }
     }, [activeTab, listHistory])
+    // on change active tab cycle
+    useEffect(() => {
+        if(activeTab == 3 && activeTabCycle == 1){
+            setTimeout(() => {
+                listCycleDate.length && loadDataTable('#cyclebydate')
+            }, 200)
+        } else if(activeTab == 3 && activeTabCycle == 2) {
+            if(cycleType == 1){
+                loadDataTable('#cyclehourcycle')
+                loadDataTable('#cyclehourcycle2')
+            } else if(cycleType == 2 ){
+                loadDataTable('#cyclehourvolume')
+                loadDataTable('#cyclehourvolume2')
+            } else if(cycleType == 3){
+                loadDataTable('#cyclehourcount')
+                loadDataTable('#cyclehourcount2')
+            }
+        }
+    },[activeTab, activeTabCycle, listCycleDate, cycleType])
     return (
         <div className={style.outerpayload}>
             <Head>
@@ -114,29 +189,63 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                {/* <WaitMessage /> */}
                 <Navbar />
                 <div className={style.content}>
                     <div className={style.activenav}>
-                        <a
-                            className={activeTab == 1 ? style.active : ''}
-                            onClick={() => setActiveTab(1)}
-                        ><i className="fi fi-rr-confetti"></i> Latest</a>
-                        <a
-                            className={activeTab == 2 ? style.active : ''}
-                            onClick={() => setActiveTab(2)}
-                        ><i className="fi fi-rr-time-past"></i>History</a>
-                        <a
-                            className={activeTab == 3 ? style.active : ''}
-                            onClick={() => setActiveTab(3)}
-                        ><i className="fi fi-rr-loading"></i> Cycle</a>
+                        <div>
+                            <a
+                                className={activeTab == 1 ? style.active : ''}
+                                onClick={() => setActiveTab(1)}
+                            ><i className="fi fi-rr-confetti"></i> Latest</a>
+                            <a
+                                className={activeTab == 2 ? style.active : ''}
+                                onClick={() => setActiveTab(2)}
+                            ><i className="fi fi-rr-time-past"></i>History</a>
+                            <a
+                                className={activeTab == 3 ? style.active : ''}
+                                onClick={() => setActiveTab(3)}
+                            ><i className="fi fi-rr-loading"></i> Cycle</a>
+                        </div>
+                        {
+                            // konten tab cycle
+                            activeTab == 3 ? (
+                                <div>
+                                    <a
+                                        className={activeTabCycle == 1 ? style.active : ''}
+                                        onClick={() => setActiveTabCycle(1)}
+                                    ><i className="fi fi-rr-calendar-lines"></i> By Date</a>
+                                    <a
+                                        className={activeTabCycle == 2 ? style.active : ''}
+                                        onClick={() => setActiveTabCycle(2)}
+                                    ><i className="fi fi-rr-alarm-clock"></i> By Hourly</a>
+                                </div>
+                            ) : ''
+                        }
+                        {
+                            activeTab == 3 && activeTabCycle == 2 ? (
+                                <div>
+                                    <a
+                                        className={cycleType == 1 ? style.active : ''}
+                                        onClick={() => setCycleType(1)}
+                                    ><i className="fi fi-rr-confetti"></i> Cycle</a>
+                                    <a
+                                        className={cycleType == 2 ? style.active : ''}
+                                        onClick={() => setCycleType(2)}
+                                    ><i className="fi fi-rr-time-past"></i> Volume</a>
+                                    <a
+                                        className={cycleType == 3 ? style.active : ''}
+                                        onClick={() => setCycleType(3)}
+                                    ><i className="fi fi-rr-loading"></i> Count</a>
+                                </div>
+                            ) : ''
+                        }
                     </div>
                     {
                         activeTab == 2 || activeTab == 3 ? (
                             <a onClick={() => setShowFilter(!showFilter)} title={bahasa.pilihperiode} className={style.filter}><i className="fi fi-rr-calendar"></i></a>
                         ) : ''
                     }
-                    <div className={`${ showFilter ? style.activefilter : ''} ${style.filterbox}`}>
+                    <div className={`${showFilter ? style.activefilter : ''} ${style.filterbox}`}>
                         <form className={style.form} onSubmit={submitDate}>
                             <div className="section">
                                 <label>{bahasa.pilihperiode}</label>
@@ -144,10 +253,10 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                             </div>
                             <div className="section">
                                 <label>{bahasa.pilih} CN</label>
-                                <input list="listunit" onChange={changeUnit}/>
+                                <input list="listunit" onChange={changeUnit} />
                                 <datalist id="listunit">
                                     {
-                                        listAllUnit.length && listAllUnit.map((item,index) => (
+                                        listAllUnit.length && listAllUnit.map((item, index) => (
                                             <option value={item} key={index}>{item}</option>
                                         ))
                                     }
@@ -164,7 +273,7 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                             // konten tab latest
                             activeTab == 1 ? (
                                 <div className={style.tablebox}>
-                                    <table id="payloadtable">
+                                    <table id="payloadtable" className="tabelprod">
                                         <thead>
                                             <tr>
                                                 <th>CN</th>
@@ -219,9 +328,10 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                                 </div>
                             ) : ''
                         }{
+                            // konten tab history
                             activeTab == 2 ? (
                                 <div className={style.tablebox}>
-                                    <table id="historytable">
+                                    <table id="historytable" className="tabelprod">
                                         <thead>
                                             <tr>
                                                 <th>CN</th>
@@ -273,12 +383,388 @@ const Loader = ({ listDataLatest, listAllUnit}) => {
                                             ) : (
                                                 <tbody>
                                                     <tr>
-                                                        <td colspan="18">{bahasa.tidakada}</td>
+                                                        <td colSpan="18">{bahasa.tidakada}</td>
                                                     </tr>
                                                 </tbody>
                                             )
                                         }
                                     </table>
+                                </div>
+                            ) : ''
+                        }
+                        
+                        {
+                            activeTab == 3 && activeTabCycle == 1 ? (
+                                <div className={style.tablebox}>
+                                    <table id="cyclebydate" className="tabelprod">
+                                        <thead>
+                                            <tr>
+                                                <th>CN</th>
+                                                <th>Cycle</th>
+                                                <th>PLD (Ton)</th>
+                                                <th>Speed</th>
+                                                <th>EST (Min)</th>
+                                                <th>ES (Km/h)</th>
+                                                <th>LS (Km/h)</th>
+                                                <th>LDT (Min)</th>
+                                                <th>EDT (Min)</th>
+                                                <th>LST (Min)</th>
+                                                <th>LT (Min)</th>
+                                                <th>EDD (Km)</th>
+                                                <th>LDD (Km)</th>
+                                                <th>DT (Min)</th>
+                                                <th>LMTS (Km/h)</th>
+                                                <th>EMTS (Km/h)</th>
+                                            </tr>
+                                        </thead>
+                                        {
+                                            listCycleDate.length ? (
+                                                <tbody>
+                                                    {listCycleDate.map((item, index) => (
+                                                        <tr key={index}>
+                                                            <td>{item.cn}</td>
+                                                            <td>{item.cycle}</td>
+                                                            <td>{parseFloat(item.pld).toFixed(2)}</td>
+                                                            <td>{((parseFloat(item.eats) + parseFloat(item.lats)) / 2).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.est).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.eats).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.lats).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.ltt).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.ett).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.lst).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.lt).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.etd).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.ltd).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.dt).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.lmts).toFixed(2)}</td>
+                                                            <td>{parseFloat(item.emts).toFixed(2)}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            ) : (
+                                                <tbody>
+                                                    <tr>
+                                                        <td colSpan="18">{bahasa.tidakada}</td>
+                                                    </tr>
+                                                </tbody>
+                                            )
+                                        }
+                                    </table>
+                                </div>
+                            ) : ''
+                        }
+                        {
+                            // cycle hourly by cycle
+                            activeTab == 3 && activeTabCycle == 2 && cycleType == 1 ? (
+                                <div className={style.cyclebox}>
+                                    <h3>Shift 1</h3>
+                                    {
+                                        listDataByCycle ? (
+                                            <div className={style.tablebox}>
+                                                <table id="cyclehourcycle" className="tabelprod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CN</th>
+                                                            <th>06</th>
+                                                            <th>07</th>
+                                                            <th>08</th>
+                                                            <th>09</th>
+                                                            <th>10</th>
+                                                            <th>11</th>
+                                                            <th>12</th>
+                                                            <th>13</th>
+                                                            <th>14</th>
+                                                            <th>15</th>
+                                                            <th>16</th>
+                                                            <th>17</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listDataByCycle.shift1 && listDataByCycle.shift1.length && listDataByCycle.shift1.map((cycle,index) => (
+                                                                <tr key={index}>
+                                                                    <td>{cycle.cn}</td>
+                                                                    <td>{cycle["06"]}</td>
+                                                                    <td>{cycle["07"]}</td>
+                                                                    <td>{cycle["08"]}</td>
+                                                                    <td>{cycle["09"]}</td>
+                                                                    <td>{cycle["10"]}</td>
+                                                                    <td>{cycle["11"]}</td>
+                                                                    <td>{cycle["12"]}</td>
+                                                                    <td>{cycle["13"]}</td>
+                                                                    <td>{cycle["14"]}</td>
+                                                                    <td>{cycle["15"]}</td>
+                                                                    <td>{cycle["16"]}</td>
+                                                                    <td>{cycle["17"]}</td>
+                                                                    <td>{cycle["total"]}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : ''
+                                    }
+                                    <h3>Shift 2</h3>
+                                    {
+                                        listDataByCycle ? (
+                                            <div className={style.tablebox}>
+                                                <table id="cyclehourcycle2" className="tabelprod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CN</th>
+                                                            <th>18</th>
+                                                            <th>19</th>
+                                                            <th>20</th>
+                                                            <th>21</th>
+                                                            <th>22</th>
+                                                            <th>23</th>
+                                                            <th>00</th>
+                                                            <th>01</th>
+                                                            <th>02</th>
+                                                            <th>03</th>
+                                                            <th>04</th>
+                                                            <th>05</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listDataByCycle.shift2 && listDataByCycle.shift2.length && listDataByCycle.shift2.map((cycle, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{cycle.cn}</td>
+                                                                    <td>{cycle["18"]}</td>
+                                                                    <td>{cycle["19"]}</td>
+                                                                    <td>{cycle["20"]}</td>
+                                                                    <td>{cycle["21"]}</td>
+                                                                    <td>{cycle["22"]}</td>
+                                                                    <td>{cycle["23"]}</td>
+                                                                    <td>{cycle["00"]}</td>
+                                                                    <td>{cycle["01"]}</td>
+                                                                    <td>{cycle["02"]}</td>
+                                                                    <td>{cycle["03"]}</td>
+                                                                    <td>{cycle["04"]}</td>
+                                                                    <td>{cycle["05"]}</td>
+                                                                    <td>{cycle["total"]}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : ''
+                                    }
+                                </div>
+                            ) : ''
+                        }
+                        {
+                            // cycle hourly by volume
+                            activeTab == 3 && activeTabCycle == 2 && cycleType == 2 ? (
+                                <div className={style.cyclebox}>
+                                    <h3>Shift 1</h3>
+                                    {
+                                        listDataByVolume ? (
+                                            <div className={style.tablebox}>
+                                                <table id="cyclehourvolume" className="tabelprod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CN</th>
+                                                            <th>06</th>
+                                                            <th>07</th>
+                                                            <th>08</th>
+                                                            <th>09</th>
+                                                            <th>10</th>
+                                                            <th>11</th>
+                                                            <th>12</th>
+                                                            <th>13</th>
+                                                            <th>14</th>
+                                                            <th>15</th>
+                                                            <th>16</th>
+                                                            <th>17</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listDataByVolume.shift1 && listDataByVolume.shift1.length && listDataByVolume.shift1.map((cycle,index) => (
+                                                                <tr key={index}>
+                                                                    <td>{cycle.cn}</td>
+                                                                    <td>{cycle["06"]}</td>
+                                                                    <td>{cycle["07"]}</td>
+                                                                    <td>{cycle["08"]}</td>
+                                                                    <td>{cycle["09"]}</td>
+                                                                    <td>{cycle["10"]}</td>
+                                                                    <td>{cycle["11"]}</td>
+                                                                    <td>{cycle["12"]}</td>
+                                                                    <td>{cycle["13"]}</td>
+                                                                    <td>{cycle["14"]}</td>
+                                                                    <td>{cycle["15"]}</td>
+                                                                    <td>{cycle["16"]}</td>
+                                                                    <td>{cycle["17"]}</td>
+                                                                    <td>{parseFloat(cycle["total"]).toLocaleString('id-ID')}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : ''
+                                    }
+                                    <h3>Shift 2</h3>
+                                    {
+                                        listDataByVolume ? (
+                                            <div className={style.tablebox}>
+                                                <table id="cyclehourvolume2" className="tabelprod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CN</th>
+                                                            <th>18</th>
+                                                            <th>19</th>
+                                                            <th>20</th>
+                                                            <th>21</th>
+                                                            <th>22</th>
+                                                            <th>23</th>
+                                                            <th>00</th>
+                                                            <th>01</th>
+                                                            <th>02</th>
+                                                            <th>03</th>
+                                                            <th>04</th>
+                                                            <th>05</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listDataByVolume.shift2 && listDataByVolume.shift2.length && listDataByVolume.shift2.map((cycle, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{cycle.cn}</td>
+                                                                    <td>{cycle["18"]}</td>
+                                                                    <td>{cycle["19"]}</td>
+                                                                    <td>{cycle["20"]}</td>
+                                                                    <td>{cycle["21"]}</td>
+                                                                    <td>{cycle["22"]}</td>
+                                                                    <td>{cycle["23"]}</td>
+                                                                    <td>{cycle["00"]}</td>
+                                                                    <td>{cycle["01"]}</td>
+                                                                    <td>{cycle["02"]}</td>
+                                                                    <td>{cycle["03"]}</td>
+                                                                    <td>{cycle["04"]}</td>
+                                                                    <td>{cycle["05"]}</td>
+                                                                    <td>{parseFloat(cycle["total"]).toLocaleString('id-ID')}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : ''
+                                    }
+                                </div>
+                            ) : ''
+                        }
+                        {
+                            // cycle hourly by count
+                            activeTab == 3 && activeTabCycle == 2 && cycleType == 3 ? (
+                                <div className={style.cyclebox}>
+                                    <h3>Shift 1</h3>
+                                    {
+                                        listDataByCount ? (
+                                            <div className={style.tablebox}>
+                                                <table id="cyclehourcount" className="tabelprod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CN</th>
+                                                            <th>06</th>
+                                                            <th>07</th>
+                                                            <th>08</th>
+                                                            <th>09</th>
+                                                            <th>10</th>
+                                                            <th>11</th>
+                                                            <th>12</th>
+                                                            <th>13</th>
+                                                            <th>14</th>
+                                                            <th>15</th>
+                                                            <th>16</th>
+                                                            <th>17</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listDataByCount.shift1 && listDataByCount.shift1.length && listDataByCount.shift1.map((cycle,index) => (
+                                                                <tr key={index}>
+                                                                    <td>{cycle.cn}</td>
+                                                                    <td>{cycle["06"]}</td>
+                                                                    <td>{cycle["07"]}</td>
+                                                                    <td>{cycle["08"]}</td>
+                                                                    <td>{cycle["09"]}</td>
+                                                                    <td>{cycle["10"]}</td>
+                                                                    <td>{cycle["11"]}</td>
+                                                                    <td>{cycle["12"]}</td>
+                                                                    <td>{cycle["13"]}</td>
+                                                                    <td>{cycle["14"]}</td>
+                                                                    <td>{cycle["15"]}</td>
+                                                                    <td>{cycle["16"]}</td>
+                                                                    <td>{cycle["17"]}</td>
+                                                                    <td>{parseFloat(cycle["total"]).toLocaleString('id-ID')}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : ''
+                                    }
+                                    <h3>Shift 2</h3>
+                                    {
+                                        listDataByCount ? (
+                                            <div className={style.tablebox}>
+                                                <table id="cyclehourcount2" className="tabelprod">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>CN</th>
+                                                            <th>18</th>
+                                                            <th>19</th>
+                                                            <th>20</th>
+                                                            <th>21</th>
+                                                            <th>22</th>
+                                                            <th>23</th>
+                                                            <th>00</th>
+                                                            <th>01</th>
+                                                            <th>02</th>
+                                                            <th>03</th>
+                                                            <th>04</th>
+                                                            <th>05</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listDataByCount.shift2 && listDataByCount.shift2.length && listDataByCount.shift2.map((cycle, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{cycle.cn}</td>
+                                                                    <td>{cycle["18"]}</td>
+                                                                    <td>{cycle["19"]}</td>
+                                                                    <td>{cycle["20"]}</td>
+                                                                    <td>{cycle["21"]}</td>
+                                                                    <td>{cycle["22"]}</td>
+                                                                    <td>{cycle["23"]}</td>
+                                                                    <td>{cycle["00"]}</td>
+                                                                    <td>{cycle["01"]}</td>
+                                                                    <td>{cycle["02"]}</td>
+                                                                    <td>{cycle["03"]}</td>
+                                                                    <td>{cycle["04"]}</td>
+                                                                    <td>{cycle["05"]}</td>
+                                                                    <td>{parseFloat(cycle["total"]).toLocaleString('id-ID')}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : ''
+                                    }
                                 </div>
                             ) : ''
                         }
@@ -299,7 +785,7 @@ export async function getStaticProps() {
     return {
         props: {
             listDataLatest: listData.data,
-            listAllUnit : listUnit
+            listAllUnit: listUnit
         },
         revalidate: 60
     }
