@@ -1,20 +1,23 @@
 import style from '@/styles/TopBar.module.css'
 import {useState} from 'react'
-const TopBar = (listItem) => {
+const TopBar = ({listItem, setActive}) => {
     const [activeTab, setActiveTab] = useState(1)
+    const handleClick = (param) => {
+        setActiveTab(param)
+        setActive(param)
+    }
     return (
-        <div className={style.content}>
-            <div className={style.activenav}>
-                <a
-                    className={activeTab == 1 ? style.active : ''}
-                    onClick={() => setActiveTab(1)}
-                ><i className="fi fi-rr-confetti"></i> Cycle</a>
-                <a
-                    className={activeTab == 2 ? style.active : ''}
-                    onClick={() => setActiveTab(2)}
-                ><i className="fi fi-rr-time-past"></i> Truck Count</a>
-            </div>
+        <div className={style.activenav}>
+            {
+                listItem.map(item => (
+                    <a key={item.id}
+                        className={activeTab == item.id ? style.active : ''}
+                        onClick={() => handleClick(item.id)}
+                    ><i className={item.icon}></i> {item.text}</a>
+                ))
+            }
         </div>
+
     )
 }
 

@@ -8,7 +8,6 @@ import Navbar from '@/components/Navbar'
 
 const Dashboard = () => {
     const bahasa = useSelector(state => state.languageReducer.dictionary)
-    console.log(bahasa)
     // pengecekkan token jwt
     useEffect(() => {
         checkAuth()

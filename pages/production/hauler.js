@@ -179,8 +179,8 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
     return (
         <div className={style.outerpayload}>
             <Head>
-                <title>Production by Loader</title>
-                <meta name="description" content="Page Produksi berdasarkan Loader, Dashboard PPA." />
+                <title>Hauler Production</title>
+                <meta name="description" content="Page Produksi berdasarkan Hauler, Dashboard PPA." />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
@@ -222,15 +222,15 @@ const Loader = ({ listDataLatest, listAllUnit }) => {
                                     <a
                                         className={cycleType == 1 ? style.active : ''}
                                         onClick={() => setCycleType(1)}
-                                    ><i className="fi fi-rr-confetti"></i> Cycle</a>
+                                    > Cycle</a>
                                     <a
                                         className={cycleType == 2 ? style.active : ''}
                                         onClick={() => setCycleType(2)}
-                                    ><i className="fi fi-rr-time-past"></i> Volume</a>
+                                    > Volume</a>
                                     <a
                                         className={cycleType == 3 ? style.active : ''}
                                         onClick={() => setCycleType(3)}
-                                    ><i className="fi fi-rr-loading"></i> Count</a>
+                                    > Count</a>
                                 </div>
                             ) : ''
                         }

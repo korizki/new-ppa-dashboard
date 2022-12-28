@@ -50,6 +50,9 @@ form>.section{
 .tabelprod{
   width: 100%;
 }
+.nocollapse{
+  border-collapse: collapse
+}
 #cyclehourcycle2_filter, #cyclehourcycle_filter, #cyclehourvolume_filter, #cyclehourvolume2_filter, #cyclehourcount_filter, #cyclehourcount2_filter{
   padding-bottom: 1.5em;
 }
