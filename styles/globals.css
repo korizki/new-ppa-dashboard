@@ -43,7 +43,7 @@ form>.section{
     border-radius: 0.3em;
 }
 /* custom styling datatable payload */
-#payloadtable_wrapper, #historytable_wrapper, #cyclebydate_wrapper, #cyclehourcycle, #cyclehourcycle2, #cyclehourvolume, #cyclehourvolume2, #cyclehourcount, #cyclehourcount2{
+#payloadtable_wrapper, #historytable_wrapper, #cyclebydate_wrapper{
   border-collapse: collapse;
   padding: 1em 0 2em 0;
 }
@@ -53,7 +53,7 @@ form>.section{
 .nocollapse{
   border-collapse: collapse
 }
-#cyclehourcycle2_filter, #cyclehourcycle_filter, #cyclehourvolume_filter, #cyclehourvolume2_filter, #cyclehourcount_filter, #cyclehourcount2_filter{
+#cyclehourcycle2_filter, #cyclehourcycle_filter, #cyclehourvolume_filter, #cyclehourvolume2_filter, #cyclehourcount_filter, #cyclehourcount2_filter, #loadercycle2_filter, #loadercycle_filter, #loadertc2_filter, #loadertc_filter{
   padding-bottom: 1.5em;
 }
 .dataTables_wrapper .dataTables_length select, .dataTables_wrapper .dataTables_filter input{

@@ -36,7 +36,6 @@ const Loader = () => {
         },
     ]
     const loadDataTable = (table) => {
-        console.log(table)
         $(`${table}`).DataTable({
             destroy: true,
             dom: 'lfBrtip',
@@ -50,7 +49,7 @@ const Loader = () => {
                 titleAttr: 'Filter column'
             }],
             ordering: true,
-            order: [[1, 'desc']]
+            order: [[0, 'desc']]
         })
     }
     const getDataFromAPI = (date) => {
@@ -79,11 +78,13 @@ const Loader = () => {
     }
     useEffect(() => {
         if (activeTab == 1) {
-            loadDataTable('loadercycle')
-            loadDataTable('loadercycle2')
+            setTimeout(() => {
+                loadDataTable('#loadercycle')
+                loadDataTable('#loadercycle2')
+            },200)
         } else if (activeTab == 2) {
-            loadDataTable('loadertc')
-            loadDataTable('loadertc2')
+            loadDataTable('#loadertc')
+            loadDataTable('#loadertc2')
         }
     }, [activeTab])
     useEffect(() => {
@@ -102,7 +103,7 @@ const Loader = () => {
                 {
                     activeTab == 1 ? (
                         <div className={style.tablebox}>
-                            <h3>Shift 1</h3>
+                            <h3><i className="fi fi-rr-clock-three"></i> Shift 1</h3>
                             <table id="loadercycle" className="tabelprod nocollapse">
                                 <thead>
                                     <tr>
@@ -122,40 +123,32 @@ const Loader = () => {
                                         <th>Total</th>
                                     </tr>
                                 </thead>
+                                <tbody>
                                 {
-                                    listData && listData.shift_1 && listData.shift_1.length ? (
-                                        <tbody>
-                                            {
-                                                listData.shift_1.map((item, index) => (
-                                                    <tr key={index}>
-                                                        <td>{item.loader}</td>
-                                                        <td>{item["06"]}</td>
-                                                        <td>{item["07"]}</td>
-                                                        <td>{item["08"]}</td>
-                                                        <td>{item["09"]}</td>
-                                                        <td>{item["10"]}</td>
-                                                        <td>{item["11"]}</td>
-                                                        <td>{item["12"]}</td>
-                                                        <td>{item["13"]}</td>
-                                                        <td>{item["14"]}</td>
-                                                        <td>{item["15"]}</td>
-                                                        <td>{item["16"]}</td>
-                                                        <td>{item["17"]}</td>
-                                                        <td>{item["total"]}</td>
-                                                    </tr>
-                                                ))
-                                            }
-                                        </tbody>
-                                    ) : (
-                                        <tbody>
-                                            <tr>
-                                                <td colSpan="14">{bahasa.tidakada}</td>
+                                    listData && listData.shift_1 && listData.shift_1.length ? 
+                                        listData.shift_1.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.loader}</td>
+                                                <td>{item["06"]}</td>
+                                                <td>{item["07"]}</td>
+                                                <td>{item["08"]}</td>
+                                                <td>{item["09"]}</td>
+                                                <td>{item["10"]}</td>
+                                                <td>{item["11"]}</td>
+                                                <td>{item["12"]}</td>
+                                                <td>{item["13"]}</td>
+                                                <td>{item["14"]}</td>
+                                                <td>{item["15"]}</td>
+                                                <td>{item["16"]}</td>
+                                                <td>{item["17"]}</td>
+                                                <td>{item["total"]}</td>
                                             </tr>
-                                        </tbody>
-                                    )
+                                        ))
+                                         : ""
                                 }
+                                </tbody>
                             </table>
-                            <h3>Shift 2</h3>
+                            <h3><i className="fi fi-rr-clock-three"></i> Shift 2</h3>
                             <table id="loadercycle2" className="tabelprod nocollapse">
                                 <thead>
                                     <tr>
@@ -175,38 +168,29 @@ const Loader = () => {
                                         <th>Total</th>
                                     </tr>
                                 </thead>
+                                <tbody>
                                 {
-                                    listData && listData.shift_2 && listData.shift_2.length ? (
-                                        <tbody>
-                                            {
-                                                listData.shift_2.map((item, index) => (
-                                                    <tr key={index}>
-                                                        <td>{item.loader}</td>
-                                                        <td>{item["18"]}</td>
-                                                        <td>{item["19"]}</td>
-                                                        <td>{item["20"]}</td>
-                                                        <td>{item["21"]}</td>
-                                                        <td>{item["22"]}</td>
-                                                        <td>{item["23"]}</td>
-                                                        <td>{item["00"]}</td>
-                                                        <td>{item["01"]}</td>
-                                                        <td>{item["02"]}</td>
-                                                        <td>{item["03"]}</td>
-                                                        <td>{item["04"]}</td>
-                                                        <td>{item["05"]}</td>
-                                                        <td>{item["total"]}</td>
-                                                    </tr>
-                                                ))
-                                            }
-                                        </tbody>
-                                    ) : (
-                                        <tbody>
-                                            <tr>
-                                                <td colSpan="14">{bahasa.tidakada}</td>
+                                    listData && listData.shift_2 && listData.shift_2.length ? 
+                                        listData.shift_2.map((item, index) => (
+                                            <tr key={index}>
+                                                <td>{item.loader}</td>
+                                                <td>{item["18"]}</td>
+                                                <td>{item["19"]}</td>
+                                                <td>{item["20"]}</td>
+                                                <td>{item["21"]}</td>
+                                                <td>{item["22"]}</td>
+                                                <td>{item["23"]}</td>
+                                                <td>{item["00"]}</td>
+                                                <td>{item["01"]}</td>
+                                                <td>{item["02"]}</td>
+                                                <td>{item["03"]}</td>
+                                                <td>{item["04"]}</td>
+                                                <td>{item["05"]}</td>
+                                                <td>{item["total"]}</td>
                                             </tr>
-                                        </tbody>
-                                    )
+                                        )) : ""
                                 }
+                                </tbody>
                             </table>
                         </div>
                     ) : ''
@@ -214,7 +198,7 @@ const Loader = () => {
                 {
                     activeTab == 2 ? (
                         <div className={style.tablebox}>
-                            <h3>Shift 1</h3>
+                            <h3><i className="fi fi-rr-clock-three"></i> Shift 1</h3>
                             <table id="loadertc" className="tabelprod nocollapse">
                                 <thead>
                                     <tr>
@@ -267,8 +251,8 @@ const Loader = () => {
                                     )
                                 }
                             </table>
-                            <h3>Shift 2</h3>
-                            <table id="loadercycle2" className="tabelprod nocollapse">
+                            <h3><i className="fi fi-rr-clock-three"></i> Shift 2</h3>
+                            <table id="loadertc2" className="tabelprod nocollapse">
                                 <thead>
                                     <tr>
                                         <th>Loader</th>
@@ -311,13 +295,7 @@ const Loader = () => {
                                                 ))
                                             }
                                         </tbody>
-                                    ) : (
-                                        <tbody>
-                                            <tr>
-                                                <td colSpan="14">{bahasa.tidakada}</td>
-                                            </tr>
-                                        </tbody>
-                                    )
+                                    ) : ""
                                 }
                             </table>
                         </div>
